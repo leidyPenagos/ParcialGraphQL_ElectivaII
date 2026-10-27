@@ -100,8 +100,7 @@ export function normalizarAtraccion(atraccion) {
       name: departamento.name ?? "",  
     description: departamento.description ?? "",
     surface: departamento.surface ?? null,
-    population: departamento.population ?? null,
-    postalCode: departamento.postalCode ?? null
+    population: departamento.population ?? null
   };
 
 }
