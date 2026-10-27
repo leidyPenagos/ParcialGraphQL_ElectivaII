@@ -1,0 +1,190 @@
+Consultas 
+1.	Obtener todos los departamentos
+query {
+  departments {
+    id
+    name
+    population
+    surface
+    municipalities
+  }
+}
+2.	 Departamentos con población superior a un valor
+query {
+  departments(populationMin: 1000000) {
+    name
+    population
+  }
+}
+3.	Departamentos dentro de un rango de población
+query {
+  departments(
+    populationMin: 500000
+    populationMax: 3000000
+  ) {
+    name
+    population
+  }
+}
+4.	 Buscar un departamento por nombre
+query {
+  department(name: "Boyacá") {
+    id
+    name
+    population
+    surface
+    municipalities
+    capital {
+      id
+      name
+    }
+  }
+}
+5.	 Los cinco departamentos más poblados
+query {
+  topPopulatedDepartments(limit: 5) {
+    name
+    population
+  }
+}
+6.	 Buscar sitios turísticos por ciudad
+query {
+  attractions(cityName: "Cartagena") {
+    id
+    name
+    description
+    city {
+      name
+    }
+  }
+}
+7.	 Buscar atracciones por palabra clave
+query {
+  attractions(keyword: "parque") {
+    name
+    description
+    latitude
+    longitude
+  }
+}
+8.	  Obtener las atracciones de un departamento (Boyaca)
+query {
+  department(name: "Boyacá") {
+    name
+    attractions {
+      id
+      name
+      description
+      city {
+        name
+      }
+    }
+  }
+}
+9.	 Consultar las ciudades de un departamento (id 1: Amazonas)
+query {
+  citiesByDepartment(departmentId: 1) {
+    id
+    name
+    population
+    departmentId
+  }
+}
+10.	 total de departamentos y de atracciones
+query {
+  statistics {
+    totalDepartments
+    totalAttractions
+  }
+}
+
+
+
+
+
+Consultas por fragmentos
+1.	Departamentos con mínimo 1 millon en población Y 3 con mas población 
+
+fragment DatosDepartamento on Department {
+  id
+  name
+  population
+  surface
+  municipalities
+}
+
+query {
+  departments(populationMin: 1000000) {
+    ...DatosDepartamento
+  }
+
+  topPopulatedDepartments(limit: 3) {
+    ...DatosDepartamento
+  }
+}
+2.	mostrar una lista sencilla de departamentos( Lista de los departamentos id y nombre)
+fragment DepartamentoBasico on Department {
+  id
+  name
+}
+
+query {
+  departments {
+    ...DepartamentoBasico
+  }
+}
+
+3.	mostrar únicamente el nombre y la población de los departamentos que tengan mínimo 5 millones en población
+
+
+fragment DatosPoblacion on Department {
+  name
+  population
+}
+
+query {
+  departments(populationMin: 500000) {
+    ...DatosPoblacion
+  }
+}
+
+4.	buscar atracciones cuyo nombre o descripción contenga la palabra «parque» y obtener sus datos principales
+
+fragment DatosAtraccion on Attraction {
+  id
+  name
+  description
+  latitude
+  longitude
+}
+
+query {
+  attractions(keyword: "parque") {
+    ...DatosAtraccion
+  }
+}
+
+5.	departamentos con población mínima de un millón y atracciones que coincidan con «museo»
+
+
+fragment DatosDepartamento on Department {
+  id
+  name
+  population
+}
+
+fragment DatosAtraccion on Attraction {
+  id
+  name
+  description
+}
+
+query {
+  departments(populationMin: 1000000) {
+    ...DatosDepartamento
+  }
+
+  attractions(keyword: "museo") {
+    ...DatosAtraccion
+  }
+}
