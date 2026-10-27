@@ -90,3 +90,18 @@ export function normalizarAtraccion(atraccion) {
     city: normalizarCiudad(atraccion.city)
   };
 }
+//normalizar los datos de un departamento.
+  export function normalizarDepartamento(departamento) {
+    if (!departamento) {
+      return null;
+    } 
+    return {
+      id: departamento.id ?? null,
+      name: departamento.name ?? "",  
+    description: departamento.description ?? "",
+    surface: departamento.surface ?? null,
+    population: departamento.population ?? null,
+    postalCode: departamento.postalCode ?? null
+  };
+
+}
